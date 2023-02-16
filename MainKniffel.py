@@ -305,6 +305,7 @@ Mit 1 kannst du dir nochmal dein Kniffel Bord angucken.
             if userInput == "1":
                 KniffelCard.print_kniffel_card(players[player_counter])
                 time.sleep(5)
+
                 continue
             counter += 1
         all_dice.dice = [
@@ -317,6 +318,9 @@ Mit 1 kannst du dir nochmal dein Kniffel Bord angucken.
 def main():
     # import ComputerDoingStuff
     # ComputerDoingStuff.bot_move()
+
+
+
     global player_counter
     global players
     global game_counter
@@ -325,12 +329,9 @@ def main():
         try:
             clear()
             amount_of_player = int(
-                input(
-                    """───╣Kniffel╠───
-Wie viele wollen mitspielen
->"""
-                )
-            )
+                input(                   """───╣Kniffel╠───
+Wie viele wollen mitspielen>"""
+                )          )
             break
         except:
             clear()
@@ -339,12 +340,19 @@ Wie viele wollen mitspielen
         clear()
         players.append(
             KniffelCard(
-                input(
-                    f"""Bitte trage einen Namen für Spieler {playerToAdd+1} ein.
-"""
+                input(       f"""Bitte trage einen Namen für Spieler {playerToAdd+1} ein."""
                 ),
                 True,
             )
+
+
+
+
+
+
+
+
+
         )
     if players[player_counter].is_player:
         while game_counter < 13:
@@ -368,6 +376,9 @@ Wie viele wollen mitspielen
         scoreboard.reverse()
         for player in scoreboard:
             print(str(player))
+
+
+
 
 
 main()
