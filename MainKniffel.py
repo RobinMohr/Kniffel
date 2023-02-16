@@ -312,6 +312,7 @@ Mit 1 kannst du dir nochmal dein Kniffel Bord angucken.
             item if item != 0 else random.randint(1, 6) for item in all_dice.dice
         ]
         all_dice.dice.sort()
+
     return all_dice.dice
 
 
