@@ -361,4 +361,9 @@ Wie viele wollen mitspielen
             print(str(player))
 
 
+
+
+
+
+
 main()
