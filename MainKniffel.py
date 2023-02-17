@@ -1,9 +1,10 @@
+import os
 import random
 import time
-import os
+
 import YahtzeeCheckDice
 
-clear = lambda: os.system("cls")
+clear = lambda: os.system("cls")  # noqa
 
 game_counter = 0
 
@@ -260,10 +261,10 @@ def yahtzee_card_update(all_dice: list, self: YahtzeeCard):
     time.sleep(5)
 
 
-def rollDice():
+def roll_dice():
     global players
     global player_counter
-    endEarly = False
+    end_early = False
     all_dice = Dices(
         [
             random.randint(1, 6),
@@ -273,35 +274,35 @@ def rollDice():
             random.randint(1, 6),
         ]
     )
-    for rerollCounter in range(2):
-        if endEarly:
-            endEarly = False
+    for reroll_counter in range(2):
+        if end_early:
+            end_early = False
             break
         all_dice.dice.sort()
         counter = 0
         while counter < len(all_dice.dice):
-            userInput = ""
+            user_input = ""
             while (
-                userInput.lower() != "y"
-                and userInput.lower() != "n"
-                and userInput.lower() != "0"
-                and userInput.lower() != "1"
+                user_input.lower() != "y"
+                and user_input.lower() != "n"
+                and user_input.lower() != "0"
+                and user_input.lower() != "1"
             ):
                 clear()
                 print(f"Spieler {players[player_counter].owner_name} ist dran")
-                print(f"Neu Würfeln Nr. {rerollCounter+2}/3")
+                print(f"Neu Würfeln Nr. {reroll_counter + 2}/3")
                 print(str(all_dice))
-                userInput = input(
-                    f"""Möchtest du Würfel nr. {counter+1} behalten?(y/n)
+                user_input = input(
+                    f"""Möchtest du Würfel nr. {counter + 1} behalten?(y/n)
 Mit 0 beendest du deinen Zug komplett.
 Mit 1 kannst du dir nochmal dein yahtzee Bord angucken."""
                 )
-            if userInput == "n":
+            if user_input == "n":
                 all_dice.dice[counter] = 0
-            if userInput == "0":
-                endEarly = True
+            if user_input == "0":
+                end_early = True
                 break
-            if userInput == "1":
+            if user_input == "1":
                 YahtzeeCard.print_yahtzee_card(players[player_counter])
                 time.sleep(5)
                 continue
@@ -334,12 +335,12 @@ Wie viele wollen mitspielen
         except ValueError:
             clear()
 
-    for playerToAdd in range(amount_of_player):
+    for player_to_add in range(amount_of_player):
         clear()
         players.append(
             YahtzeeCard(
                 input(
-                    f"""Bitte trage einen Namen für Spieler {playerToAdd+1} ein.
+                    f"""Bitte trage einen Namen für Spieler {player_to_add + 1} ein.
 """
                 ),
                 True,
@@ -349,7 +350,7 @@ Wie viele wollen mitspielen
         while game_counter < 13:
             clear()
             print(players[player_counter].owner_name, " ist dran")
-            all_dice = Dices(rollDice())
+            all_dice = Dices(roll_dice())
             YahtzeeCard.calculate_summaries(players[player_counter])
             YahtzeeCard.print_yahtzee_card(players[player_counter])
 

@@ -9,11 +9,7 @@ def calculate_full_house_score(dice_list):
 
 
 def count_dice_with_occurrence(throw, occurrence_threshold):
-    return (
-        sum(throw)
-        if any(throw.count(dice) >= occurrence_threshold for dice in set(throw))
-        else 0
-    )
+    return sum(throw) if any(throw.count(dice) >= occurrence_threshold for dice in set(throw)) else 0
 
 
 def has_consecutive_dice(all_dice, desired_length):
