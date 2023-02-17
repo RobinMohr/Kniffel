@@ -1,7 +1,7 @@
 import random
 import time
 import os
-import KniffelCheckStuff
+import YahtzeeCheckDice
 
 clear = lambda: os.system("cls")
 
@@ -11,7 +11,7 @@ player_counter = 0
 players = []
 
 
-class dices:
+class Dices:
     def __init__(self, dice):
         self.dice = dice
 
@@ -76,7 +76,7 @@ class dices:
 """
 
 
-class KniffelCard:
+class YahtzeeCard:
     def __init__(self, owner_name, is_player):
         self.owner_name = owner_name if is_player else "Computer"
         self.is_player = is_player
@@ -94,7 +94,7 @@ class KniffelCard:
         self.full_house = ""
         self.small_street = ""
         self.big_street = ""
-        self.kniffel = ""
+        self.yahtzee = ""
         self.chance = ""
         self.summary = 0
 
@@ -127,14 +127,14 @@ class KniffelCard:
                 self.full_house,
                 self.small_street,
                 self.big_street,
-                self.kniffel,
+                self.yahtzee,
                 self.chance,
                 self.bonus,
             ]
             if value != ""
         )
 
-    def print_kniffel_card(self):
+    def print_yahtzee_card(self):
         print(
             f"""
     Name: {self.owner_name}
@@ -152,20 +152,20 @@ class KniffelCard:
 [9] Full House: {self.full_house}
 [10] kleine Straße: {self.small_street}
 [11] große Straße: {self.big_street}
-[12] Kniffel: {self.kniffel}
+[12] yahtzee: {self.yahtzee}
 [13] Chance: {self.chance}
 [~] Summe: {self.summary}
 """
         )
 
 
-def kniffel_card_update(all_dice: list, self: KniffelCard):
+def yahtzee_card_update(all_dice: list, self: YahtzeeCard):
     while True:
         user_input = -1
         while user_input < 1 or user_input > 13:
             try:
                 user_input = int(input("Wo möchtest du deinen Wurf eintragen? (1-13)"))
-            except:
+            except ValueError:
                 print("Bitte gebe eine Zahl zwischen 1 und 13 ein.")
                 user_input = -1
 
@@ -202,7 +202,7 @@ def kniffel_card_update(all_dice: list, self: KniffelCard):
 
             case 7:
                 if self.triplet == "":
-                    if KniffelCheckStuff.count_dice_with_occurrence(all_dice, 3):
+                    if YahtzeeCheckDice.count_dice_with_occurrence(all_dice, 3):
                         self.triplet = sum(all_dice)
                     else:
                         self.triplet = 0
@@ -210,7 +210,7 @@ def kniffel_card_update(all_dice: list, self: KniffelCard):
 
             case 8:
                 if self.quadruplet == "":
-                    if KniffelCheckStuff.count_dice_with_occurrence(all_dice, 4):
+                    if YahtzeeCheckDice.count_dice_with_occurrence(all_dice, 4):
                         self.quadruplet = sum(all_dice)
                     else:
                         self.quadruplet = 0
@@ -218,14 +218,14 @@ def kniffel_card_update(all_dice: list, self: KniffelCard):
 
             case 9:
                 if self.full_house == "":
-                    self.full_house = KniffelCheckStuff.calculate_full_house_score(
+                    self.full_house = YahtzeeCheckDice.calculate_full_house_score(
                         all_dice
                     )
                     break
 
             case 10:
                 if self.small_street == "":
-                    if KniffelCheckStuff.has_consecutive_dice(all_dice, 4):
+                    if YahtzeeCheckDice.has_consecutive_dice(all_dice, 4):
                         self.small_street = 30
                     else:
                         self.small_street = 0
@@ -233,21 +233,21 @@ def kniffel_card_update(all_dice: list, self: KniffelCard):
 
             case 11:
                 if self.big_street == "":
-                    if KniffelCheckStuff.has_consecutive_dice(all_dice, 5):
+                    if YahtzeeCheckDice.has_consecutive_dice(all_dice, 5):
                         self.big_street = 40
                     else:
                         self.big_street = 0
                     break
 
             case 12:
-                if self.kniffel == "":
+                if self.yahtzee == "":
                     if (
-                        KniffelCheckStuff.count_dice_with_occurrence(all_dice, 5) / 5
+                        YahtzeeCheckDice.count_dice_with_occurrence(all_dice, 5) / 5
                         == all_dice[0]
                     ):
-                        self.kniffel = 50
+                        self.yahtzee = 50
                     else:
-                        self.kniffel = 0
+                        self.yahtzee = 0
                     break
 
             case 13:
@@ -255,8 +255,8 @@ def kniffel_card_update(all_dice: list, self: KniffelCard):
                     self.chance = sum(all_dice)
                     break
 
-    KniffelCard.calculate_summaries(self)
-    KniffelCard.print_kniffel_card(self)
+    YahtzeeCard.calculate_summaries(self)
+    YahtzeeCard.print_yahtzee_card(self)
     time.sleep(5)
 
 
@@ -264,7 +264,7 @@ def rollDice():
     global players
     global player_counter
     endEarly = False
-    all_dice = dices(
+    all_dice = Dices(
         [
             random.randint(1, 6),
             random.randint(1, 6),
@@ -294,8 +294,7 @@ def rollDice():
                 userInput = input(
                     f"""Möchtest du Würfel nr. {counter+1} behalten?(y/n)
 Mit 0 beendest du deinen Zug komplett.
-Mit 1 kannst du dir nochmal dein Kniffel Bord angucken.
-"""
+Mit 1 kannst du dir nochmal dein yahtzee Bord angucken."""
                 )
             if userInput == "n":
                 all_dice.dice[counter] = 0
@@ -303,25 +302,20 @@ Mit 1 kannst du dir nochmal dein Kniffel Bord angucken.
                 endEarly = True
                 break
             if userInput == "1":
-                KniffelCard.print_kniffel_card(players[player_counter])
+                YahtzeeCard.print_yahtzee_card(players[player_counter])
                 time.sleep(5)
-
                 continue
             counter += 1
         all_dice.dice = [
             item if item != 0 else random.randint(1, 6) for item in all_dice.dice
         ]
         all_dice.dice.sort()
-
     return all_dice.dice
 
 
 def main():
     # import ComputerDoingStuff
     # ComputerDoingStuff.bot_move()
-
-
-
     global player_counter
     global players
     global game_counter
@@ -330,41 +324,37 @@ def main():
         try:
             clear()
             amount_of_player = int(
-                input(                   """───╣Kniffel╠───
-Wie viele wollen mitspielen>"""
-                )          )
+                input(
+                    """───╣yahtzee╠───
+Wie viele wollen mitspielen
+>"""
+                )
+            )
             break
-        except:
+        except ValueError:
             clear()
 
     for playerToAdd in range(amount_of_player):
         clear()
         players.append(
-            KniffelCard(
-                input(       f"""Bitte trage einen Namen für Spieler {playerToAdd+1} ein."""
+            YahtzeeCard(
+                input(
+                    f"""Bitte trage einen Namen für Spieler {playerToAdd+1} ein.
+"""
                 ),
                 True,
             )
-
-
-
-
-
-
-
-
-
         )
     if players[player_counter].is_player:
         while game_counter < 13:
             clear()
             print(players[player_counter].owner_name, " ist dran")
-            all_dice = dices(rollDice())
-            KniffelCard.calculate_summaries(players[player_counter])
-            KniffelCard.print_kniffel_card(players[player_counter])
+            all_dice = Dices(rollDice())
+            YahtzeeCard.calculate_summaries(players[player_counter])
+            YahtzeeCard.print_yahtzee_card(players[player_counter])
 
             print(str(all_dice))
-            kniffel_card_update(all_dice.dice, players[player_counter])
+            yahtzee_card_update(all_dice.dice, players[player_counter])
 
             if player_counter == len(players) - 1:
                 player_counter = 0
@@ -377,9 +367,6 @@ Wie viele wollen mitspielen>"""
         scoreboard.reverse()
         for player in scoreboard:
             print(str(player))
-
-
-
 
 
 main()
